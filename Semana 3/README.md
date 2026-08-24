@@ -1,34 +1,36 @@
-# Laboratorio 2 - Vectorización SIMD con AVX2
+# Semana 3 - Laboratorio 2
 
-## Objetivo
+## Vectorización SIMD con AVX2
 
-Comparar el rendimiento de una multiplicación de matrices utilizando una versión escalar y una versión vectorizada con instrucciones SIMD y AVX2.
+En este laboratorio se implementaron diferentes operaciones utilizando SIMD con AVX2. Para las pruebas se trabajó con un tamaño de 2048 elementos. La idea principal fue utilizar operaciones vectorizadas para posteriormente aplicarlas en una multiplicación de matrices y comparar su tiempo de ejecución con una versión escalar.
 
-Para las pruebas se trabajó con matrices de tamaño `2048 x 2048`.
+## Desarrollo
 
-En la versión AVX2 se implementó la multiplicación de vectores y la reducción utilizando registros vectoriales. Estas operaciones se utilizaron posteriormente para realizar el producto punto necesario en la multiplicación de matrices.
+Primero se implementó la multiplicación elemento a elemento entre dos vectores utilizando AVX2.
 
-También se realizó la transposición de la matriz B para facilitar el acceso a sus elementos durante la multiplicación.
+Después se realizó una reducción para sumar los valores obtenidos en los registros vectoriales. Con estas dos operaciones se pudo implementar el producto punto entre vectores.
 
-## Resultados
+Para la multiplicación de matrices se utilizó este producto punto vectorizado. También se realizó la transposición de la matriz B antes de hacer la multiplicación, para acceder a sus datos de una forma más conveniente durante el cálculo.
+
+Además de la versión con AVX2, se utilizó una versión escalar para poder comparar los tiempos de ejecución.
+
+## Resultados obtenidos
 
 | Implementación | Tiempo (s) |
-|---------------|-----------:|
-| Escalar | 7.229610 |
-| AVX2 | 2.863350 |
+|----------------|-----------:|
+| Escalar        | 7.229610 |
+| AVX2           | 2.863350 |
 
-Ambas implementaciones produjeron el mismo resultado, por lo que la vectorización no modificó el resultado de la multiplicación.
+Se verificó que ambas versiones produjeran los mismos valores en la matriz resultante.
 
-El speedup obtenido fue:
+Para comparar el rendimiento se calculó el speedup:
 
-S = 7.229610 / 2.863350 = 2.53
+`Speedup = 7.229610 / 2.863350 = 2.53`
 
-Por lo tanto, en esta prueba la versión utilizando AVX2 fue aproximadamente **2.53 veces más rápida** que la versión escalar.
+Por lo tanto, en esta ejecución la versión con AVX2 fue aproximadamente **2.53 veces más rápida** que la versión escalar.
 
-## Análisis
+## Observaciones
 
-AVX2 permite trabajar con varios elementos al mismo tiempo utilizando registros de 256 bits. Esto permite realizar varias multiplicaciones en una misma operación en lugar de procesar cada elemento individualmente.
+La versión con AVX2 obtuvo un menor tiempo porque permite realizar la misma operación sobre varios datos utilizando instrucciones vectoriales, en lugar de procesarlos uno por uno.
 
-Sin embargo, esto no significa que todo el programa vaya a ser 8 veces más rápido, ya que también se realizan otras operaciones como accesos a memoria, reducción de los resultados parciales, transposición de la matriz y control de los ciclos.
-
-En las pruebas realizadas se obtuvo una mejora de aproximadamente 2.53 veces con respecto a la versión escalar, por lo que se observa una mejora importante al utilizar SIMD con AVX2.
+Aun así, la mejora del programa completo no depende solamente de la parte vectorizada. La multiplicación de matrices también incluye accesos a memoria, ciclos, la transposición de la matriz y otras operaciones que forman parte del tiempo total de ejecución.
